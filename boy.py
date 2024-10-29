@@ -90,6 +90,11 @@ class Run :
         boy.x += boy.dir * 5
         boy.frame = (boy.frame + 1) % 8
 
+        if boy.x <0:
+            boy.x = 10
+        elif boy.x>800:
+            boy.x = 790
+
 
     @staticmethod
     def draw(boy):
@@ -101,13 +106,13 @@ class AutoRun:
     @staticmethod
     def enter(boy, e):
         boy.start_time = get_time()
-        # 캐릭터의 현재 보고 있는 방향(face_dir)으로 달리기 시작
+
         if boy.face_dir == 1:
             boy.dir = 1
-            boy.action = 1  # 오른쪽 달리기
+            boy.action = 1
         elif boy.face_dir == -1:
             boy.dir = -1
-            boy.action = 0  # 왼쪽 달리기
+            boy.action = 0
 
     @staticmethod
     def exit(boy, e):
@@ -115,8 +120,8 @@ class AutoRun:
 
     @staticmethod
     def do(boy):
-        # 현재 방향으로 이동
-        boy.x += boy.dir * 10
+
+        boy.x += boy.dir * 15
         boy.frame = (boy.frame + 1) % 8
 
         # 화면 끝에 도달하면 반대 방향으로 전환
@@ -132,6 +137,10 @@ class AutoRun:
         # 5초가 지나면 AutoRun에서 Idle 상태로 전환
         if get_time() - boy.start_time > 5:
             boy.state_machine.add_event(('TIME_OUT', 0))
+            if boy.face_dir ==1:
+                boy.action = 3
+            else:
+                boy.action = 2
 
     @staticmethod
     def draw(boy):
